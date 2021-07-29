@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20B50" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
+        <attribute name="alias" optional="YES" attributeType="String"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hex" optional="YES" attributeType="String"/>
+        <attribute name="isAccountBackup" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="portalId" optional="YES" attributeType="String"/>
+        <attribute name="portalName" optional="YES" attributeType="String"/>
+        <attribute name="portalUrl" optional="YES" attributeType="String"/>
+        <attribute name="serverUrl" optional="YES" attributeType="String"/>
+        <attribute name="userCode" optional="YES" attributeType="String"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+        <attribute name="userseed" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="AuthHistory" representedClassName="AuthHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="authDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hex" optional="YES" attributeType="String"/>
+        <attribute name="isSuccesAuth" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="portalUrl" optional="YES" attributeType="String"/>
+        <attribute name="userCode" optional="YES" attributeType="String"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Account" positionX="-63" positionY="-18" width="128" height="194"/>
+        <element name="AuthHistory" positionX="-63" positionY="54" width="128" height="119"/>
+    </elements>
+</model>

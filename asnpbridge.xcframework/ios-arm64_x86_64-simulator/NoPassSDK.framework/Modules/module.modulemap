@@ -1,0 +1,11 @@
+framework module NoPassSDK {
+  umbrella header "NoPassSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module NoPassSDK.Swift {
+    header "NoPassSDK-Swift.h"
+    requires objc
+}

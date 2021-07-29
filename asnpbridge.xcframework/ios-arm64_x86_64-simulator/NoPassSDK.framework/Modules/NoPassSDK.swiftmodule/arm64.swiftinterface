@@ -1,0 +1,630 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name NoPassSDK
+import CommonCrypto
+import CoreData
+import Dispatch
+import Foundation
+import MobileCoreServices
+@_exported import NoPassSDK
+import Security
+import Swift
+import SystemConfiguration
+import UIKit
+@_hasMissingDesignatedInitializers open class NetworkReachabilityManager {
+  public enum NetworkReachabilityStatus {
+    case unknown
+    case notReachable
+    case reachable(NoPassSDK.NetworkReachabilityManager.ConnectionType)
+  }
+  public enum ConnectionType {
+    case ethernetOrWiFi
+    case wwan
+    public static func == (a: NoPassSDK.NetworkReachabilityManager.ConnectionType, b: NoPassSDK.NetworkReachabilityManager.ConnectionType) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public typealias Listener = (NoPassSDK.NetworkReachabilityManager.NetworkReachabilityStatus) -> Swift.Void
+  open var isReachable: Swift.Bool {
+    get
+  }
+  open var isReachableOnWWAN: Swift.Bool {
+    get
+  }
+  open var isReachableOnEthernetOrWiFi: Swift.Bool {
+    get
+  }
+  open var networkReachabilityStatus: NoPassSDK.NetworkReachabilityManager.NetworkReachabilityStatus {
+    get
+  }
+  open var listenerQueue: Dispatch.DispatchQueue
+  open var listener: NoPassSDK.NetworkReachabilityManager.Listener?
+  open var flags: SystemConfiguration.SCNetworkReachabilityFlags? {
+    get
+  }
+  open var previousFlags: SystemConfiguration.SCNetworkReachabilityFlags
+  public convenience init?(host: Swift.String)
+  public convenience init?()
+  @objc deinit
+  @discardableResult
+  open func startListening() -> Swift.Bool
+  open func stopListening()
+}
+extension NetworkReachabilityManager.NetworkReachabilityStatus : Swift.Equatable {
+}
+public func == (lhs: NoPassSDK.NetworkReachabilityManager.NetworkReachabilityStatus, rhs: NoPassSDK.NetworkReachabilityManager.NetworkReachabilityStatus) -> Swift.Bool
+public func setLogEnabled(_ enabled: Swift.Bool)
+@_hasMissingDesignatedInitializers final public class BackupAccountModel : Swift.Hashable {
+  final public var userCode: Swift.String
+  final public var username: Swift.String
+  final public var portalid: Swift.String
+  final public var portalName: Swift.String
+  final public var apikey: Swift.String
+  final public var isRestore: Swift.Bool
+  final public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: NoPassSDK.BackupAccountModel, rhs: NoPassSDK.BackupAccountModel) -> Swift.Bool
+  @objc deinit
+  final public var hashValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers open class Request {
+  open var delegate: NoPassSDK.TaskDelegate {
+    get
+  }
+  open var task: Foundation.URLSessionTask? {
+    get
+  }
+  open var request: Foundation.URLRequest? {
+    get
+  }
+  open var response: Foundation.HTTPURLResponse? {
+    get
+  }
+  open var retryCount: Swift.UInt {
+    get
+  }
+  @discardableResult
+  open func authenticate(user: Swift.String, password: Swift.String, persistence: Foundation.URLCredential.Persistence = .forSession) -> Self
+  @discardableResult
+  open func authenticate(usingCredential credential: Foundation.URLCredential) -> Self
+  open class func authorizationHeader(user: Swift.String, password: Swift.String) -> (key: Swift.String, value: Swift.String)?
+  open func resume()
+  open func suspend()
+  open func cancel()
+  @objc deinit
+}
+extension Request : Swift.CustomStringConvertible {
+  open var description: Swift.String {
+    get
+  }
+}
+extension Request : Swift.CustomDebugStringConvertible {
+  open var debugDescription: Swift.String {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class DataRequest : NoPassSDK.Request {
+  override open var request: Foundation.URLRequest? {
+    get
+  }
+  open var progress: Foundation.Progress {
+    get
+  }
+  @discardableResult
+  open func stream(closure: ((Foundation.Data) -> Swift.Void)? = nil) -> Self
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class DownloadRequest : NoPassSDK.Request {
+  override open var request: Foundation.URLRequest? {
+    get
+  }
+  open var resumeData: Foundation.Data? {
+    get
+  }
+  open var progress: Foundation.Progress {
+    get
+  }
+  override open func cancel()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class UploadRequest : NoPassSDK.DataRequest {
+  override open var request: Foundation.URLRequest? {
+    get
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+open class StreamRequest : NoPassSDK.Request {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class RegistrationService {
+  open func doConfirmRegistration(otp: Swift.String, serverUrl: Swift.String, completion: ((Swift.String?, Swift.Bool?, Swift.Error?) -> ())?)
+  @objc deinit
+}
+public protocol RestoreFlowDelegate : AnyObject {
+  func restoreDidFinish(error: NoPassSDK.NopassError?)
+  func accountDidRestore(account: NoPassSDK.NoPassAccount?)
+}
+@_hasMissingDesignatedInitializers open class MultipartFormData {
+  open var contentType: Swift.String {
+    get
+    set(value)
+  }
+  @objc deinit
+}
+public enum HTTPMethod : Swift.String {
+  case options
+  case get
+  case head
+  case post
+  case put
+  case patch
+  case delete
+  case trace
+  case connect
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias Parameters = [Swift.String : Any]
+public struct URLEncoding {
+  public enum Destination {
+    case methodDependent
+    case queryString
+    case httpBody
+    public static func == (a: NoPassSDK.URLEncoding.Destination, b: NoPassSDK.URLEncoding.Destination) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public enum ArrayEncoding {
+    case brackets
+    case noBrackets
+    public static func == (a: NoPassSDK.URLEncoding.ArrayEncoding, b: NoPassSDK.URLEncoding.ArrayEncoding) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public enum BoolEncoding {
+    case numeric
+    case literal
+    public static func == (a: NoPassSDK.URLEncoding.BoolEncoding, b: NoPassSDK.URLEncoding.BoolEncoding) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public static var `default`: NoPassSDK.URLEncoding {
+    get
+  }
+  public static var methodDependent: NoPassSDK.URLEncoding {
+    get
+  }
+  public static var queryString: NoPassSDK.URLEncoding {
+    get
+  }
+  public static var httpBody: NoPassSDK.URLEncoding {
+    get
+  }
+  public let destination: NoPassSDK.URLEncoding.Destination
+  public let arrayEncoding: NoPassSDK.URLEncoding.ArrayEncoding
+  public let boolEncoding: NoPassSDK.URLEncoding.BoolEncoding
+  public init(destination: NoPassSDK.URLEncoding.Destination = .methodDependent, arrayEncoding: NoPassSDK.URLEncoding.ArrayEncoding = .brackets, boolEncoding: NoPassSDK.URLEncoding.BoolEncoding = .numeric)
+  public func queryComponents(fromKey key: Swift.String, value: Any) -> [(Swift.String, Swift.String)]
+  public func escape(_ string: Swift.String) -> Swift.String
+}
+public protocol NoPassSynchronisationServiceDelegate : AnyObject {
+  func synchronisationDidFinish()
+  func syncRegistrationCode(code: Swift.String, isNeedConfirmationCode: Swift.Bool)
+  func accountWasSynchronised(account: NoPassSDK.NoPassAccount?, error: NoPassSDK.NopassError?)
+  func synchronisationDidFail(error: NoPassSDK.NopassError)
+}
+@_hasMissingDesignatedInitializers public class NoPassSynchronisationService {
+  public static var shared: NoPassSDK.NoPassSynchronisationService
+  weak public var delegate: NoPassSDK.NoPassSynchronisationServiceDelegate?
+  public func startSyncAccount(result: Swift.String, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool)
+  public func finishAccountSynchronisation(confirmId: Swift.String, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool)
+  @objc deinit
+}
+extension NoPassSynchronisationService : NoPassSDK.NoPassRegistrationServiceDelegate {
+  public func registrationCode(code: Swift.String, isNeedConfirmationCode: Swift.Bool)
+  public func registration(account: NoPassSDK.NoPassAccount?, error: NoPassSDK.NopassError?)
+}
+public struct NoPassAuthModel {
+  public let userName: Swift.String
+  public let portalName: Swift.String
+  public func toDictionaryForRN() -> Swift.Dictionary<Swift.String, Swift.String>
+}
+@_hasMissingDesignatedInitializers public class NoPassAccountService {
+  public static var shared: NoPassSDK.NoPassAccountService
+  public var onAccountsChange: (() -> ())?
+  public func fetchAccounts() -> [NoPassSDK.NoPassAccount]
+  public func fetchAccount(userCode: Swift.String) -> NoPassSDK.NoPassAccount?
+  public func fetchHisory() -> [NoPassSDK.NoPassHistory]
+  public func removeAccount(account: NoPassSDK.NoPassAccount, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool, completion: ((Foundation.NSError?) -> Swift.Void)?)
+  public func clearBackupData()
+  public func emptymptyBackupData(pin: Swift.String) -> Swift.String
+  public func isCanDecodeBackupFile(encodedString: Swift.String, pin: Swift.String) -> Swift.Bool
+  public func backupAccounts(pin: Swift.String, encryptedBackupData: Swift.String?, enabled2FaMethod: NoPassSDK.BiometricType, isSreenLock: Swift.Bool, completion: ((NoPassSDK.NopassError?, Swift.String?) -> Swift.Void)?)
+  public func restoreAccounts(backupData: Swift.String, pin: Swift.String, delegate: NoPassSDK.RestoreFlowDelegate?, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool, restoreDidStart: ((Swift.Int, NoPassSDK.NopassError?) -> Swift.Void)?)
+  public func subscribe()
+  @objc deinit
+}
+public struct NoPassHistory {
+  public let userCode: Swift.String
+  public let accountName: Swift.String
+  public let portalName: Swift.String
+  public let authDate: Foundation.Date
+  public let hex: Swift.String
+  public let isSuccesAuth: Swift.Bool
+  public func toDictionaryForRN() -> Swift.Dictionary<Swift.String, Any>
+}
+public enum DeclineType : Swift.String {
+  case skipPressed
+  case backPressed
+  case madeWrong
+  case changedMind
+  case didNotSend
+  case wrongCode
+  case localAuthFailedPin
+  case deviceDifferentTime
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension Date {
+  public func stringDate(format: Swift.String = "yyyy-MM-dd'T'HH:mm:ss.SSS", timeZone: Foundation.TimeZone = .current) -> Swift.String
+  public func stringDate(_ timeZone: Foundation.TimeZone = .current, dateStyle: Foundation.DateFormatter.Style, timeStyle: Foundation.DateFormatter.Style) -> Swift.String
+}
+@_inheritsConvenienceInitializers @objc public class NoPassConfigurator : ObjectiveC.NSObject {
+  @objc public static func setSecretKey(_ key: Swift.String)
+  @objc public static func setCurrentGPSCordinate(_ latitude: Swift.Double, longitude: Swift.Double)
+  @objc public static func enableLogs(_ enabled: Swift.Bool)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension NSNotification.Name {
+  public struct Task {
+    public static var DidResume: Foundation.Notification.Name
+    public static var DidSuspend: Foundation.Notification.Name
+    public static var DidCancel: Foundation.Notification.Name
+    public static var DidComplete: Foundation.Notification.Name
+  }
+}
+extension Notification {
+  public struct Key {
+    public static var Task: Swift.String
+    public static var ResponseData: Swift.String
+  }
+}
+public enum NoPassPushNotificationWorkflow : Swift.Int {
+  case UserAuthentication
+  case UserAuthenticationUpdateImage
+  case UserRegistration
+  case UserDeletion
+  case UserUpdating
+  case RadiusUserAuthentication
+  case AuthenticationResult
+  case AccountSynchronization
+  case unowned
+  public func notificationName() -> Swift.String
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class NoPassNotificationService {
+  public static var shared: NoPassSDK.NoPassNotificationService
+  public func getNotificationType(data: [Swift.AnyHashable : Any]) -> NoPassSDK.NoPassPushNotificationWorkflow
+  public func setRegistrationToken(token: Swift.String)
+  public func getRegistrationToken() -> Swift.String?
+  public func passNotification(data: [Swift.AnyHashable : Any]?, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class SessionDelegate : ObjectiveC.NSObject {
+  open var sessionDidBecomeInvalidWithError: ((Foundation.URLSession, Swift.Error?) -> Swift.Void)?
+  open var sessionDidReceiveChallenge: ((Foundation.URLSession, Foundation.URLAuthenticationChallenge) -> (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?))?
+  open var sessionDidReceiveChallengeWithCompletion: ((Foundation.URLSession, Foundation.URLAuthenticationChallenge, @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void) -> Swift.Void)?
+  open var sessionDidFinishEventsForBackgroundURLSession: ((Foundation.URLSession) -> Swift.Void)?
+  open var taskWillPerformHTTPRedirection: ((Foundation.URLSession, Foundation.URLSessionTask, Foundation.HTTPURLResponse, Foundation.URLRequest) -> Foundation.URLRequest?)?
+  open var taskWillPerformHTTPRedirectionWithCompletion: ((Foundation.URLSession, Foundation.URLSessionTask, Foundation.HTTPURLResponse, Foundation.URLRequest, @escaping (Foundation.URLRequest?) -> Swift.Void) -> Swift.Void)?
+  open var taskDidReceiveChallenge: ((Foundation.URLSession, Foundation.URLSessionTask, Foundation.URLAuthenticationChallenge) -> (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?))?
+  open var taskDidReceiveChallengeWithCompletion: ((Foundation.URLSession, Foundation.URLSessionTask, Foundation.URLAuthenticationChallenge, @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void) -> Swift.Void)?
+  open var taskNeedNewBodyStream: ((Foundation.URLSession, Foundation.URLSessionTask) -> Foundation.InputStream?)?
+  open var taskNeedNewBodyStreamWithCompletion: ((Foundation.URLSession, Foundation.URLSessionTask, @escaping (Foundation.InputStream?) -> Swift.Void) -> Swift.Void)?
+  open var taskDidSendBodyData: ((Foundation.URLSession, Foundation.URLSessionTask, Swift.Int64, Swift.Int64, Swift.Int64) -> Swift.Void)?
+  open var taskDidComplete: ((Foundation.URLSession, Foundation.URLSessionTask, Swift.Error?) -> Swift.Void)?
+  open var dataTaskDidReceiveResponse: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.URLResponse) -> Foundation.URLSession.ResponseDisposition)?
+  open var dataTaskDidReceiveResponseWithCompletion: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.URLResponse, @escaping (Foundation.URLSession.ResponseDisposition) -> Swift.Void) -> Swift.Void)?
+  open var dataTaskDidBecomeDownloadTask: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.URLSessionDownloadTask) -> Swift.Void)?
+  open var dataTaskDidReceiveData: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.Data) -> Swift.Void)?
+  open var dataTaskWillCacheResponse: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.CachedURLResponse) -> Foundation.CachedURLResponse?)?
+  open var dataTaskWillCacheResponseWithCompletion: ((Foundation.URLSession, Foundation.URLSessionDataTask, Foundation.CachedURLResponse, @escaping (Foundation.CachedURLResponse?) -> Swift.Void) -> Swift.Void)?
+  open var downloadTaskDidFinishDownloadingToURL: ((Foundation.URLSession, Foundation.URLSessionDownloadTask, Foundation.URL) -> Swift.Void)?
+  open var downloadTaskDidWriteData: ((Foundation.URLSession, Foundation.URLSessionDownloadTask, Swift.Int64, Swift.Int64, Swift.Int64) -> Swift.Void)?
+  open var downloadTaskDidResumeAtOffset: ((Foundation.URLSession, Foundation.URLSessionDownloadTask, Swift.Int64, Swift.Int64) -> Swift.Void)?
+  @available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+  open var streamTaskReadClosed: ((Foundation.URLSession, Foundation.URLSessionStreamTask) -> Swift.Void)? {
+    get
+    set(newValue)
+  }
+  @available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+  open var streamTaskWriteClosed: ((Foundation.URLSession, Foundation.URLSessionStreamTask) -> Swift.Void)? {
+    get
+    set(newValue)
+  }
+  @available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+  open var streamTaskBetterRouteDiscovered: ((Foundation.URLSession, Foundation.URLSessionStreamTask) -> Swift.Void)? {
+    get
+    set(newValue)
+  }
+  @available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+  open var streamTaskDidBecomeInputAndOutputStreams: ((Foundation.URLSession, Foundation.URLSessionStreamTask, Foundation.InputStream, Foundation.OutputStream) -> Swift.Void)? {
+    get
+    set(newValue)
+  }
+  open subscript(task: Foundation.URLSessionTask) -> NoPassSDK.Request? {
+    get
+    set(newValue)
+  }
+  @objc override dynamic open func responds(to selector: ObjectiveC.Selector) -> Swift.Bool
+  @objc deinit
+}
+extension SessionDelegate : Foundation.URLSessionDelegate {
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, didBecomeInvalidWithError error: Swift.Error?)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, didReceive challenge: Foundation.URLAuthenticationChallenge, completionHandler: @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void)
+  @objc dynamic open func urlSessionDidFinishEvents(forBackgroundURLSession session: Foundation.URLSession)
+}
+extension SessionDelegate : Foundation.URLSessionTaskDelegate {
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, willPerformHTTPRedirection response: Foundation.HTTPURLResponse, newRequest request: Foundation.URLRequest, completionHandler: @escaping (Foundation.URLRequest?) -> Swift.Void)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didReceive challenge: Foundation.URLAuthenticationChallenge, completionHandler: @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, needNewBodyStream completionHandler: @escaping (Foundation.InputStream?) -> Swift.Void)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didSendBodyData bytesSent: Swift.Int64, totalBytesSent: Swift.Int64, totalBytesExpectedToSend: Swift.Int64)
+  @available(iOS 10.0, OSX 10.12, tvOS 10.0, *)
+  @objc(URLSession:task:didFinishCollectingMetrics:) dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didFinishCollecting metrics: Foundation.URLSessionTaskMetrics)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didCompleteWithError error: Swift.Error?)
+}
+extension SessionDelegate : Foundation.URLSessionDataDelegate {
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, didReceive response: Foundation.URLResponse, completionHandler: @escaping (Foundation.URLSession.ResponseDisposition) -> Swift.Void)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, didBecome downloadTask: Foundation.URLSessionDownloadTask)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, didReceive data: Foundation.Data)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, dataTask: Foundation.URLSessionDataTask, willCacheResponse proposedResponse: Foundation.CachedURLResponse, completionHandler: @escaping (Foundation.CachedURLResponse?) -> Swift.Void)
+}
+extension SessionDelegate : Foundation.URLSessionDownloadDelegate {
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, downloadTask: Foundation.URLSessionDownloadTask, didFinishDownloadingTo location: Foundation.URL)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, downloadTask: Foundation.URLSessionDownloadTask, didWriteData bytesWritten: Swift.Int64, totalBytesWritten: Swift.Int64, totalBytesExpectedToWrite: Swift.Int64)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, downloadTask: Foundation.URLSessionDownloadTask, didResumeAtOffset fileOffset: Swift.Int64, expectedTotalBytes: Swift.Int64)
+}
+@available(iOS 9.0, OSX 10.11, tvOS 9.0, *)
+extension SessionDelegate : Foundation.URLSessionStreamDelegate {
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, readClosedFor streamTask: Foundation.URLSessionStreamTask)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, writeClosedFor streamTask: Foundation.URLSessionStreamTask)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, betterRouteDiscoveredFor streamTask: Foundation.URLSessionStreamTask)
+  @objc dynamic open func urlSession(_ session: Foundation.URLSession, streamTask: Foundation.URLSessionStreamTask, didBecome inputStream: Foundation.InputStream, outputStream: Foundation.OutputStream)
+}
+public enum AuthStatus {
+  case accept
+  case decline
+  case declineFromOtherDevice
+  public func toDictionaryForRN() -> Swift.Dictionary<Swift.AnyHashable, Any?>
+  public static func == (a: NoPassSDK.AuthStatus, b: NoPassSDK.AuthStatus) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@objc @_inheritsConvenienceInitializers open class NetworkManager : ObjectiveC.NSObject {
+  @objc deinit
+  @objc override dynamic public init()
+}
+public struct NoPassAuthComparisonContent {
+  public let digits: Swift.String
+  public let image: UIKit.UIImage?
+  public let customMessage: Swift.String?
+  public func toDictionary() -> Swift.Dictionary<Swift.String, Any?>
+}
+public protocol NoPassAuthServiceDelegate : AnyObject {
+  func onAuthDataChange(comparisonContent: NoPassSDK.NoPassAuthComparisonContent, authExparedDate: Foundation.Date, nextUpdate: Foundation.TimeInterval)
+  func onRadiusAuthStart(clientName: Swift.String, account: NoPassSDK.NoPassAccount, authExparedDate: Foundation.Date)
+  func onAuthFinish(error: NoPassSDK.NopassError?, authStatus: NoPassSDK.AuthStatus)
+}
+@_hasMissingDesignatedInitializers public class NoPassAuthService {
+  public static var shared: NoPassSDK.NoPassAuthService
+  weak public var delegate: NoPassSDK.NoPassAuthServiceDelegate?
+  public func isHaveAuthSessionNow() -> Swift.Bool
+  public func getAuthComparisonContent(data: [Swift.String : Any], userSeed: Swift.String) -> NoPassSDK.NoPassAuthComparisonContent?
+  public func startAuthFlow(data: [Swift.AnyHashable : Any], enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool) -> NoPassSDK.NoPassAuthModel?
+  public func authorize(enabled2FaMethod: NoPassSDK.BiometricType = .null, isScreenLock: Swift.Bool)
+  public func decline(type: NoPassSDK.DeclineType, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool)
+  @objc deinit
+}
+public protocol NoPassRegistrationServiceDelegate : AnyObject {
+  func registration(account: NoPassSDK.NoPassAccount?, error: NoPassSDK.NopassError?)
+  func registrationCode(code: Swift.String, isNeedConfirmationCode: Swift.Bool)
+}
+@_hasMissingDesignatedInitializers public class NoPassRegistrationService {
+  public static var shared: NoPassSDK.NoPassRegistrationService
+  weak public var delegate: NoPassSDK.NoPassRegistrationServiceDelegate?
+  public func startRegistration(result: Swift.String, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool)
+  @objc deinit
+}
+extension NSNotification.Name {
+  public static var didReceiveAssigeDeviceData: Foundation.Notification.Name
+  public static var applicationWillEnterForeground: Foundation.Notification.Name
+  public static var didReceiveRegistationData: Foundation.Notification.Name
+}
+public enum NopassError : Swift.Error {
+  case custom(description: Swift.String)
+  case invalidRegistrationData
+  case invalidSignature
+  case invalidKeys
+  case missingPushToken
+  case authIncorrect
+  case authAsyncTime
+  case authSignatureNotExist
+  case authSessionTimedOut
+  case backupWrongPin
+  case backupNonAccounts
+  case restoreDamagedData
+  case restoreNonAccounts
+  case restoreAccounts
+  case invalidSynchronisationData
+  case invalidQRCode
+}
+extension NopassError {
+  public var errorDescription: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers open class KeychainSwift {
+  open var lastResultCode: Darwin.OSStatus
+  open var accessGroup: Swift.String?
+  open var synchronizable: Swift.Bool
+  open func get(_ key: Swift.String) -> Swift.String?
+  open func getData(_ key: Swift.String, asReference: Swift.Bool = false) -> Foundation.Data?
+  open func getBool(_ key: Swift.String) -> Swift.Bool?
+  @discardableResult
+  open func delete(_ key: Swift.String) -> Swift.Bool
+  @discardableResult
+  open func clear() -> Swift.Bool
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class NoPassMigrationService {
+  public static var shared: NoPassSDK.NoPassMigrationService
+  public func saveAccount(userCode: Swift.String, userName: Swift.String, portalName: Swift.String, userseed: Swift.String, portalUrl: Swift.String, serverUrl: Swift.String, alias: Swift.String, createdDate: Foundation.Date, hex: Swift.String)
+  public func saveAuthHistory(userCode: Swift.String, userName: Swift.String, portalUrl: Swift.String, authDate: Foundation.Date, hex: Swift.String, isSuccesAuth: Swift.Bool)
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers open class TaskDelegate : ObjectiveC.NSObject {
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers public class ImageProvider {
+  public static func image(named: Swift.String) -> UIKit.UIImage?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class CheckApiManger {
+  @objc deinit
+}
+public func setSecretKey(_ key: Swift.String)
+public func setCurrentGPSCordinate(_ latitude: Swift.Double, longitude: Swift.Double)
+public enum BiometricType : Swift.String {
+  case null
+  case NativeFingerPrint
+  case NativeFaceId
+  case NativePinCode
+  case PinCode
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct NoPassAccount {
+  public let userCode: Swift.String
+  public let accountName: Swift.String
+  public let seed: Swift.String
+  public let crearedDate: Foundation.Date
+  public let hex: Swift.String
+  public let portalName: Swift.String
+  public let portalId: Swift.String
+  public let isAccountBackup: Swift.Bool
+  public func toDictionaryForRN() -> Swift.Dictionary<Swift.String, Any>
+}
+@_hasMissingDesignatedInitializers public class NoPassRemoveAccountService {
+  public static var shared: NoPassSDK.NoPassRemoveAccountService
+  public func deleteDevice(account: NoPassSDK.NoPassAccount, session: Swift.String, isNeedUpdateBackup: Swift.Bool = true, enabled2FaMethod: NoPassSDK.BiometricType, isScreenLock: Swift.Bool, completion: ((Foundation.NSError?) -> Swift.Void)?)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(Account) public class Account : CoreData.NSManagedObject {
+  @objc deinit
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+}
+extension Account {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<NoPassSDK.Account>
+  @objc @NSManaged dynamic public var alias: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var createdDate: Foundation.Date? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var hex: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var isAccountBackup: Swift.Bool {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var portalId: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var portalName: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var portalUrl: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var serverUrl: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var userCode: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var userName: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var userseed: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+}
+@_inheritsConvenienceInitializers @objc(AuthHistory) public class AuthHistory : CoreData.NSManagedObject {
+  @objc deinit
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+}
+extension AuthHistory {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<NoPassSDK.AuthHistory>
+  @objc @NSManaged dynamic public var authDate: Foundation.Date? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var hex: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var isSuccesAuth: Swift.Bool {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var portalUrl: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var userCode: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+  @objc @NSManaged dynamic public var userName: Swift.String? {
+    @objc get
+    @objc set(value)
+  }
+}
