@@ -76,13 +76,14 @@ final class BackupServerService : BackupServerServiceProtocol {
     
     func getSignature(alias: String, strValue: String) -> String {
         let privateKey = KeyStorage.getPrivateKey(key: alias)
-        let signature = CryptoKeyService.getSignature(strValue, privateKey: privateKey!) ?? ""
+        let publicKey = KeyStorage.getPublicKey(key: alias)
+        let signature = CryptoKeyService.getSignature(strValue, privateKey: privateKey!, publicKey: publicKey) ?? ""
         return signature
     }
     
     func getSecure(alias: String, strValue: String) -> String {
-        if let privateKey = KeyStorage.getPrivateKey(key: alias) {
-            let signature = CryptoKeyService.getSecure(id: strValue, privateKey: privateKey)
+        if let privateKey = KeyStorage.getPrivateKey(key: alias), let publicKey = KeyStorage.getPublicKey(key: alias) {
+            let signature = CryptoKeyService.getSecure(id: strValue, privateKey: privateKey, publicKey: publicKey)
             return signature
         }
         return ""

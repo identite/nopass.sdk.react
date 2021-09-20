@@ -1,4 +1,5 @@
 
+import Foundation
 
 open class CheckApiManger: CheckApiMangerProtocol {
 

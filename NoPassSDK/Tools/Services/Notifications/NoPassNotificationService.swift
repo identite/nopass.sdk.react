@@ -1,3 +1,5 @@
+import Foundation
+
 public enum NoPassPushNotificationWorkflow: Int {
     case UserAuthentication = 0
     case UserAuthenticationUpdateImage = 1

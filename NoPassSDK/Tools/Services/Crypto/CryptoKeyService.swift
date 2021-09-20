@@ -97,14 +97,15 @@ enum CryptoKeyService {
     
     
     
-    static func getSignature(_ string: String, privateKey: PrivateKey, publicKey: PublicKey? = nil) -> String? {
-        let clear = try? ClearMessage(string: string, using: .utf8)
-        let signature = try? clear?.signed(with: privateKey, digestType: .sha512)
-        let base64String = signature?.base64String
+    static func getSignature(_ string: String, privateKey: PrivateKey, publicKey: PublicKey?) -> String? {
+        var clear: ClearMessage?
+        var signature: Signature?
+        repeat {
+            clear = try? ClearMessage(string: string, using: .utf8)
+            signature = try? clear?.signed(with: privateKey, digestType: .sha512)
+        } while publicKey != nil && isSuccessfulSignature(signature, publicKey: publicKey, clear: clear) == false;
         
-        if isSuccessfulSignature(signature, publicKey: publicKey, clear: clear) {
-            logMessage("Signature is valid")
-        }
+        let base64String = signature?.base64String
         return base64String
     }
     
@@ -113,11 +114,12 @@ enum CryptoKeyService {
             return ""
         }
         var str: String = ""
-        if NoPassSDK.secretKey.isEmpty {
+        if NoPassSDKReact.secretKey.isEmpty {
             str = "\(bundleID)#\(id)"
         } else {
-            str = "\(NoPassSDK.secretKey)#\(bundleID)#\(id)"
+            str = "\(NoPassSDKReact.secretKey)#\(bundleID)#\(id)"
         }
+//        print("Secure string \(str)")
         
         return getSignature(str, privateKey: privateKey, publicKey: publicKey) ?? ""
     }    

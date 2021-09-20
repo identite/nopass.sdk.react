@@ -6,6 +6,7 @@
 //  Copyright © 2019 PSA. All rights reserved.
 //
 
+import Foundation
 
 enum ApiVersionFlowType {
     case auth

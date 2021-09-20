@@ -6,6 +6,8 @@
 //  Copyright © 2021 PSA. All rights reserved.
 //
 
+import Foundation
+
 public class NoPassMigrationService {
     
     public static var shared = NoPassMigrationService()

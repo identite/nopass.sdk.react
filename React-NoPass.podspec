@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "React-NoPass"
-    s.version      = "1.0.1"
+    s.version      = "1.0.2"
     s.license      = { type: 'Custom license', file: 'LICENSE' }
     s.summary      = "Make it easy to use NoPass react product on your iOS app."
     s.description  = "NoPass SDK is a software developer kit that allows you to build the NoPass 3-factor authentication into your existing mobile applications."

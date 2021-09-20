@@ -51,7 +51,8 @@ final class AccountUpdateService {
                 }
               
                 let privateKey = KeyStorage.getPrivateKey(key: alias)
-                let signature = CryptoKeyService.getSignature("\(sessionId)#\(userseed)", privateKey: privateKey!)
+                let publicKey = KeyStorage.getPublicKey(key: alias)
+                let signature = CryptoKeyService.getSignature("\(sessionId)#\(userseed)", privateKey: privateKey!, publicKey: publicKey)
                 strongSelf.updateConfirmation(sessionId, encryptedData: signature!, portal: portal)
             } else if let error = error {
                 print(error.localizedDescription)

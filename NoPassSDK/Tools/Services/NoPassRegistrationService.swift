@@ -125,10 +125,10 @@ public class NoPassRegistrationService {
                                    "r": ((user.r1 ?? 0) + 1),
                                    "userName": user.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""]                
         
-        guard let signJSON = data.json,let signature = CryptoKeyService.getSignature(signJSON.cleare(), privateKey: privateKey, publicKey: self.keyPair?.publicKey) else {
+        guard let signJSON = data.json, let signature = CryptoKeyService.getSignature(signJSON.cleare(), privateKey: privateKey, publicKey: self.keyPair?.publicKey) else {
             self.delegate?.registration(account: nil, error: .invalidSignature)
             return
-        }
+        }        
         
         self.delegate?.registrationCode(code: r2.description,isNeedConfirmationCode: verify.isNeedConfirmationCode)
         
@@ -160,6 +160,12 @@ public class NoPassRegistrationService {
                 let alias = "\(userCode)+\(user.portalid)"
                 KeyStorage.saveKeyPair(key: alias, publicKey: publicKey, privateKey: privateKey)
                 let hex = ColorsService.getHex(number: Int.random(in: 0...20))
+                /*
+                 TODO: Need to fix. Sometimes we can't decrypt userseed, and it is the reason of several bugs (User deletion, backup data).
+                 Some solutions:
+                 1) Find the reason of a failed decryption
+                 2) If we have an empty userseed. Show popup with error to register user again
+                */
                 let userseed = CryptoKeyService.decryptedMessage(encryptedData, privateKey: privateKey)
                 // add portalName for old accounts
                 let portalName = user.portalName.isEmpty == false ? user.portalName : user.portalUrl.removeHostName()

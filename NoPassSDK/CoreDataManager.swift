@@ -14,7 +14,7 @@ class CoreDataManager {
     
     public static let shared = CoreDataManager()
     
-    let identifier: String  = "psa.nopass.framework.NoPassSDK"       //Framework bundle ID
+    let identifier: String  = "psa.nopass.framework.NoPassSDKReact"       //Framework bundle ID
     let model: String       = "NoPass"                      //Model name
     
     
